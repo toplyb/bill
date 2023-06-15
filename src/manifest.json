@@ -1,0 +1,22 @@
+{
+    "name" : "念心记",
+    "appid" : "",
+    "description" : "",
+    "versionName" : "1.0.0",
+    "versionCode" : "100",
+    "transformPx" : false,
+    /* 小程序特有相关 */
+    "mp-weixin" : {
+        "appid" : "wx2fb839771a566d84",
+        "setting" : {
+            "urlCheck" : false,
+            "es6" : true,
+            "minified" : true
+        },
+        "usingComponents" : true
+    },
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "vueVersion" : "3"
+}
