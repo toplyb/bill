@@ -1,0 +1,43 @@
+{
+  "pages": [
+    {
+      "path": "pages/bill/index",
+      "style": {
+        "navigationBarTitleText": "念心记"
+      }
+    },
+    {
+      "path": "pages/my/index",
+      "style": {
+        "navigationBarTitleText": "念心记"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "念心记",
+    "navigationBarBackgroundColor": "#68C66E",
+    "backgroundColor": "#CBDBCC"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/bill/index",
+        "iconPath": "static/icons/bill.png",
+        "selectedIconPath": "static/icons/bill.png",
+        "text": "账单"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "iconPath": "static/icons/my.png",
+        "selectedIconPath": "static/icons/my.png",
+        "text": "收支查询"
+      }
+    ],
+    "height": "140px",
+    "spacing": "10px",
+    "color": "#011627",
+    "selectedColor": "#3ac569",
+    "backgroundColor": ""
+  }
+}
