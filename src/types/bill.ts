@@ -1,4 +1,4 @@
-interface IBillFrom {
+export interface IBillFrom {
   money: string,
   purpose: string,
   comment: string,
@@ -6,8 +6,4 @@ interface IBillFrom {
   date: string,
   created_at: string,
   type: string
-}
-
-export type {
-  IBillFrom
 }

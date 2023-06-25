@@ -6,13 +6,14 @@ const getCurrentTime = () => {
   return `${addZeroToLeft(hour)}:${addZeroToLeft(minute)}:${addZeroToLeft(second)}`
 }
 
-
-const getCurrentDate = () => {
+const getCurrentDate = (isHaveDay = true) => {
   const date = new Date()
   const year = date.getFullYear()
   const month: number = date.getMonth() + 1
   const day: number = date.getDate()
-  console.log(addZeroToLeft(month), 'addZeroToLeft(month)')
+  if (!isHaveDay) {
+    return `${year}-${addZeroToLeft(month)}`
+  }
   return `${year}-${addZeroToLeft(month)}-${addZeroToLeft(day)}`
 }
 
@@ -32,5 +33,6 @@ const addZeroToLeft = (data: string | number) => {
 export {
   getCurrentDate,
   getCurrentTime,
-  getCurrentTimeAndDate
+  getCurrentTimeAndDate,
+  addZeroToLeft
 }

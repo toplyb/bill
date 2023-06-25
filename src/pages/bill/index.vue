@@ -2,20 +2,20 @@
   <view class="container">
     <view class="container-title">最新变动</view>
     <view class="bill-list">
-      <BillItem v-for="(bill, index) in billList" :key="bill.created_at + index" :bill="bill"></BillItem>
+      <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index" :bill="bill"></BillItem>
     </view>
     <view class="container-button">
       <button @click="handlerAddBill('expense')">支出</button>
       <button @click="handlerAddBill('income')">收入</button>
       <view>
-        <Dialog ref="dialogRef" :is-show="isShowDialog" @submit="submitBill" @cancel="cancelBill"></Dialog>
+        <XSDialog ref="dialogRef" :is-show="isShowDialog" @submit="submitBill" @cancel="cancelBill"></XSDialog>
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import Dialog from '@/components/common/dialog.vue'
+import XSDialog from '@/components/common/XSDialog.vue'
 import BillItem from '@/components/bill/Item.vue'
 import { computed, ref } from 'vue'
 import type { IBillFrom } from '@/types/bill'
@@ -34,8 +34,7 @@ const sortBillList = computed(() => {
     return Date.parse(b.date + ' ' + b.time) - Date.parse(a.date + ' ' + a.time)
   })
 })
-console.log(sortBillList.value)
-const dialogRef = ref<typeof Dialog | null>(null)
+const dialogRef = ref<typeof XSDialog | null>(null)
 
 // 按钮点击事件
 const handlerAddBill = (type: BillType) => {
@@ -51,7 +50,11 @@ const submitBill = (data: IBillFrom) => {
     uni.setStorageSync('bill_list', billList);
     dialogRef.value?.resetFormData()
     isShowDialog.value = false
-
+    uni.showToast({
+      title: '提交成功',
+      duration: 2000,
+      icon: 'success'
+    });
   } catch (e) {
     uni.showToast({
       title: '保存失败，请稍后重试',
