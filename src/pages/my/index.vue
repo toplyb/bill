@@ -64,6 +64,10 @@ const selectOption = (e: any) => {
   if (e.detail.value === '1') {
     isShowTimeSelect.value = true
     currentYear.value = getAllYearInBill.value[0]
+  } else {
+    currentYear.value = ''
+    currentMonth.value = getAllMonthByYear.value[0]
+    isShowTimeSelect.value = false
   }
 }
 
@@ -124,17 +128,19 @@ const selectMonth = (e: any) => {
   currentMonth.value = getAllMonthByYear.value[e.detail.value]
 }
 
-watch(currentYear, (newYear, oldYear) => {
-  billListInPage = billList.filter(item => {
-    if (item.date.indexOf(newYear.split('年')[0]) !== -1) {
-      return item
-    }
-  })
-  allIncome.value = baseAllMoney('income', billListInPage)
-  allExpense.value = baseAllMoney('expense', billListInPage)
+watch(currentYear, (newYear) => {
+  if (newYear) {
+    billListInPage = billList.filter(item => {
+      if (item.date.indexOf(newYear.split('年')[0]) !== -1) {
+        return item
+      }
+    })
+    allIncome.value = baseAllMoney('income', billListInPage)
+    allExpense.value = baseAllMoney('expense', billListInPage)
+  }
 })
 
-watch(currentMonth, (newMonth, oldMonth) => {
+watch(currentMonth, (newMonth) => {
   if (newMonth === '全部') {
     billListInPage = billList.filter(item => {
       if (item.date.indexOf(currentYear.value.split('年')[0]) !== -1) {

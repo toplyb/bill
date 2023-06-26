@@ -1,5 +1,5 @@
 <script setup lang="ts">
-console.log('app')
+console.log()
 </script>
 <style lang="scss">
 page {

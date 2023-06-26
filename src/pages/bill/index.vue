@@ -39,7 +39,7 @@ const dialogRef = ref<typeof XSDialog | null>(null)
 // 按钮点击事件
 const handlerAddBill = (type: BillType) => {
   billType.value = type
-  isShowDialog.value = true;
+  isShowDialog.value = true
 }
 
 // 提交账单按钮
@@ -47,20 +47,20 @@ const submitBill = (data: IBillFrom) => {
   data['type'] = billType.value
   billList.unshift(data)
   try {
-    uni.setStorageSync('bill_list', billList);
+    uni.setStorageSync('bill_list', billList)
     dialogRef.value?.resetFormData()
     isShowDialog.value = false
     uni.showToast({
       title: '提交成功',
       duration: 2000,
       icon: 'success'
-    });
+    })
   } catch (e) {
     uni.showToast({
       title: '保存失败，请稍后重试',
       duration: 2000,
       icon: 'error'
-    });
+    })
   }
 }
 
