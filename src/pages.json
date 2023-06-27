@@ -11,6 +11,12 @@
       "style": {
         "navigationBarTitleText": "念心记"
       }
+    },
+    {
+      "path": "pages/chat/index",
+      "style": {
+        "navigationBarTitleText": "念心记"
+      }
     }
   ],
   "globalStyle": {
@@ -32,6 +38,12 @@
         "iconPath": "static/icons/my.png",
         "selectedIconPath": "static/icons/my.png",
         "text": "收支查询"
+      },
+      {
+        "pagePath": "pages/chat/index",
+        "iconPath": "static/icons/chat.png",
+        "selectedIconPath": "static/icons/chat.png",
+        "text": "统计"
       }
     ],
     "height": "140px",

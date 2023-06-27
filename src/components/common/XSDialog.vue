@@ -18,13 +18,13 @@
         <view>
           <view class="label">日期：</view>
           <picker :value="state.date" mode="date">
-            <view class="uni-input">{{state.date}}</view>
+            <view class="uni-input">{{ state.date }}</view>
           </picker>
         </view>
         <view>
           <view class="label">时间：</view>
           <picker :value="state.time" mode="time" start="09:01" end="21:01">
-            <view class="uni-input">{{state.time}}</view>
+            <view class="uni-input">{{ state.time }}</view>
           </picker>
         </view>
       </view>
@@ -37,15 +37,21 @@
 </template>
 
 <script setup lang='ts'>
-import { defineEmits, defineProps, onMounted, provide, reactive } from 'vue'
+import { defineEmits, defineProps, PropType, reactive } from 'vue'
 import { getCurrentDate, getCurrentTime, getCurrentTimeAndDate } from '@/utils/dateTime'
 import type { IBillFrom } from '@/types/bill'
 
 const props = defineProps({
-  isShow: Boolean,
-  type: String
+  isShow: {
+    type: Boolean as PropType<boolean>,
+    require: true
+  },
+  type: {
+    type: String as PropType<string>,
+    require: true
+  }
 })
-const emits = defineEmits(['submit', 'cancel'])
+const emits = defineEmits([ 'submit', 'cancel' ])
 
 const initBillForm: IBillFrom = {
   money: '',
@@ -65,8 +71,8 @@ const submit = () => {
       title: '请输入金额',
       duration: 2000,
       icon: 'error'
-    });
-    return false;
+    })
+    return false
   }
   emits('submit', state)
 }
@@ -76,10 +82,10 @@ const cancel = () => {
 }
 
 const resetFormData = () => {
-  state = reactive({...initBillForm})
+  state = reactive({ ...initBillForm })
 }
 
-defineExpose({resetFormData})
+defineExpose({ resetFormData })
 </script>
 
 <style scoped lang='scss'>

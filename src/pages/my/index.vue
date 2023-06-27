@@ -47,6 +47,7 @@ import { IBillFrom } from '@/types/bill'
 import BillItem from '@/components/bill/Item.vue'
 import { SELECTOPTION } from '@/enums'
 import XSPicker from '@/components/common/XSPicker.vue'
+import { getAllBills } from '@/utils/bill'
 
 const selectOptions = [
   {
@@ -72,7 +73,7 @@ const selectOption = (e: any) => {
 }
 
 // 获取所有的账单
-const billList = uni.getStorageSync('bill_list') as IBillFrom[] || [] as IBillFrom[]
+const billList = getAllBills()
 let billListInPage = reactive(billList)
 
 const baseAllMoney = function (type: string, billListInPage: IBillFrom[]) {

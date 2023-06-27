@@ -5,29 +5,30 @@
 </template>
 
 <script setup lang='ts'>
-import { defineProps } from 'vue'
+import { defineProps, PropType } from 'vue'
 
 defineProps({
   mode: {
+    type: String as PropType<'selector' | 'multiSelector' | 'time' | 'date' | 'region'>,
     default: 'selector',
     validator(value: string) {
-      return ['selector', 'multiSelector', 'time', 'date', 'region'].includes(value)
+      return [ 'selector', 'multiSelector', 'time', 'date', 'region' ].includes(value)
     }
   },
   range: {
-    type: Array,
+    type: Array as PropType<any[]>,
     default: () => [],
     required: true
   },
   rangeKey: {
-    type: String
+    type: String as PropType<string | undefined>
   },
   value: {
-    type: [String, Number],
+    type: [ String, Number ] as PropType<string | number>,
     required: true
   },
   currentValue: {
-    type: String,
+    type: String as PropType<string>,
     required: true
   }
 })
