@@ -1,6 +1,18 @@
 <template>
   <view class="container">
-    <view class="container-title">最新变动</view>
+    <view class="container-header">
+      <view class="title">最新变动</view>
+      <view class="header-right">
+        <view>
+          今日支出：
+          <view class="header-money">{{ dayExpense }}</view>
+        </view>
+        <view>
+          本周支出({{weekStartDate}}:{{weekEndDate}})：
+          <view class="header-money">{{ weekExpense }}</view>
+        </view>
+      </view>
+    </view>
     <view class="bill-list">
       <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index" :bill="bill"></BillItem>
     </view>
@@ -17,8 +29,9 @@
 <script setup lang="ts">
 import XSDialog from '@/components/common/XSDialog.vue'
 import BillItem from '@/components/bill/Item.vue'
-import { computed, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import type { IBillFrom } from '@/types/bill'
+import { getCurrentDate, getDay, getTimestamp, gleYourDate } from '@/utils/dateTime'
 
 // 账单类型，expense 支出，income 收入
 type BillType = 'expense' | 'income'
@@ -28,7 +41,7 @@ const isShowDialog = ref(false)
 // 账单类型
 const billType = ref<BillType>('expense')
 // 所有账单
-let billList = uni.getStorageSync('bill_list') as IBillFrom[] || [] as IBillFrom[]
+let billList = reactive(uni.getStorageSync('bill_list') as IBillFrom[] || [] as IBillFrom[])
 const sortBillList = computed(() => {
   return billList.sort((a, b) => {
     return Date.parse(b.date + ' ' + b.time) - Date.parse(a.date + ' ' + a.time)
@@ -69,6 +82,27 @@ const cancelBill = () => {
   dialogRef.value?.resetFormData()
   isShowDialog.value = false
 }
+
+const weekExpense = ref(0)
+const dayExpense = ref(0)
+const weekStartDate = gleYourDate(getDay() - 1, 'before')
+const weekEndDate = gleYourDate(getDay() + 1, 'after')
+
+watch(billList, (newValue) => {
+  weekExpense.value = 0
+  dayExpense.value = 0
+  newValue.forEach(item => {
+    if (item.date === getCurrentDate() && item.type === 'expense') {
+      dayExpense.value += Number(item.money)
+    }
+    if (getTimestamp(weekStartDate) <= getTimestamp(item.date) && getTimestamp(item.date) <= getTimestamp(weekEndDate) && item.type === 'expense') {
+      weekExpense.value += Number(item.money)
+    }
+  })
+}, {
+  deep: true,
+  immediate: true
+})
 </script>
 
 <style lang="scss">
@@ -81,14 +115,38 @@ const cancelBill = () => {
   justify-content: space-around;
   align-items: center;
 
-  &-title {
+  .container-header {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    line-height: 100rpx;
-    font-size: 40rpx;
-    font-weight: bold;
     background-color: #fff;
+    padding: 0 20rpx;
     box-sizing: border-box;
-    padding-left: 20rpx;
+    .title {
+      line-height: 100rpx;
+      font-size: 40rpx;
+      font-weight: bold;
+    }
+
+    .header-right {
+      margin-left: 20rpx;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      font-size: 25rpx;
+
+      &>view {
+        display: flex;
+        align-items: center;
+
+        .header-money {
+          font-size: 30rpx;
+          font-weight: bold;
+        }
+      }
+    }
   }
 
   .bill-list {
