@@ -4,15 +4,15 @@
       <view class="money-detail">
         <view class="income">
           <view class="money-title">收入</view>
-          <view class="money">{{ allIncome }}</view>
+          <view class="money">{{ allIncome.toFixed(2) }}</view>
         </view>
         <view class="expense">
           <view class="money-title">支出</view>
-          <view class="money">{{ allExpense }}</view>
+          <view class="money">{{ allExpense.toFixed(2) }}</view>
         </view>
         <view class="expense">
           <view class="money-title">净收入</view>
-          <view class="money">{{ allIncome - allExpense }}</view>
+          <view class="money">{{ (allIncome - allExpense).toFixed(2) }}</view>
         </view>
       </view>
       <view class="select-type">

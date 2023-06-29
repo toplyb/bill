@@ -5,11 +5,11 @@
       <view class="header-right">
         <view>
           今日支出：
-          <view class="header-money">{{ dayExpense }}</view>
+          <view class="header-money">{{ dayExpense.toFixed(2) }}</view>
         </view>
         <view>
           本周支出({{weekStartDate}}:{{weekEndDate}})：
-          <view class="header-money">{{ weekExpense }}</view>
+          <view class="header-money">{{ weekExpense.toFixed(2) }}</view>
         </view>
       </view>
     </view>

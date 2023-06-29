@@ -59,9 +59,9 @@ billList.forEach(item => {
 
   if (year in allYear) {
     if (item.type === 'income') {
-      allYear[year]['income'] = allYear[year]['income'] + Number(item.money)
+      allYear[year]['income'] += Number(item.money)
     } else if (item.type === 'expense') {
-      allYear[year]['expense'] = allYear[year]['expense'] + Number(item.money)
+      allYear[year]['expense'] += Number(item.money)
     }
   } else {
     allYear[year] = {
@@ -95,9 +95,9 @@ monthData.categories = [...Object.keys(allMonth)]
 for (let month in allMonth) {
   monthData.series.forEach(item => {
     if (item.name === '收入') {
-      item.data.push(allMonth[month]['income'].toString())
+      item.data.push(allMonth[month]['income'].toFixed(2).toString())
     } else {
-      item.data.push(allMonth[month]['expense'].toString())
+      item.data.push(allMonth[month]['expense'].toFixed(2).toString())
     }
   })
 }
@@ -105,9 +105,9 @@ for (let month in allMonth) {
 for (let year in allYear) {
   yearData.series.forEach(item => {
     if (item.name === '收入') {
-      item.data.push(allYear[year]['income'].toString())
+      item.data.push(allYear[year]['income'].toFixed(2).toString())
     } else {
-      item.data.push(allYear[year]['expense'].toString())
+      item.data.push(allYear[year]['expense'].toFixed(2).toString())
     }
   })
 }
