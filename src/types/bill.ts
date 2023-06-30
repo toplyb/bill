@@ -5,5 +5,5 @@ export interface IBillFrom {
   time: string,
   date: string,
   created_at: string,
-  type: 'income' | 'expense'
+  type: 'income' | 'expense' | ''
 }

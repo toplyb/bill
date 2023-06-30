@@ -98,7 +98,9 @@ defineExpose({ resetFormData })
   left: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
+  padding-top: 50rpx;
+  box-sizing: border-box;
 
   &-content {
     background-color: #e6e7ee;
