@@ -3,18 +3,12 @@
     <view class="container-header">
       <view class="title">最新变动</view>
       <view class="header-right">
-        <view>
-          今日支出：
-          <view class="header-money">{{ dayExpense.toFixed(2) }}</view>
-        </view>
-        <view>
-          本周支出({{weekStartDate}}:{{weekEndDate}})：
-          <view class="header-money">{{ weekExpense.toFixed(2) }}</view>
-        </view>
+        <DayMoney :bill-list="sortBillList"></DayMoney>
+        <WeekMoney :bill-list="sortBillList"></WeekMoney>
       </view>
     </view>
     <view class="bill-list">
-      <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index" :bill="bill"></BillItem>
+      <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index + Math.random()" :bill="bill"></BillItem>
     </view>
     <view class="container-button">
       <button @click="handlerAddBill('expense')">支出</button>
@@ -29,9 +23,10 @@
 <script setup lang="ts">
 import XSDialog from '@/components/common/XSDialog.vue'
 import BillItem from '@/components/bill/Item.vue'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import type { IBillFrom } from '@/types/bill'
-import { getCurrentDate, getDay, getTimestamp, gleYourDate } from '@/utils/dateTime'
+import WeekMoney from '@/components/bill/WeekMoney.vue'
+import DayMoney from '@/components/bill/DayMoney.vue'
 
 // 账单类型，expense 支出，income 收入
 type BillType = 'expense' | 'income'
@@ -83,26 +78,6 @@ const cancelBill = () => {
   isShowDialog.value = false
 }
 
-const weekExpense = ref(0)
-const dayExpense = ref(0)
-const weekStartDate = gleYourDate(getDay() - 1, 'before')
-const weekEndDate = gleYourDate(getDay() + 1, 'after')
-
-watch(billList, (newValue) => {
-  weekExpense.value = 0
-  dayExpense.value = 0
-  newValue.forEach(item => {
-    if (item.date === getCurrentDate() && item.type === 'expense') {
-      dayExpense.value += Number(item.money)
-    }
-    if (getTimestamp(weekStartDate) <= getTimestamp(item.date) && getTimestamp(item.date) <= getTimestamp(weekEndDate) && item.type === 'expense') {
-      weekExpense.value += Number(item.money)
-    }
-  })
-}, {
-  deep: true,
-  immediate: true
-})
 </script>
 
 <style lang="scss">
@@ -122,6 +97,7 @@ watch(billList, (newValue) => {
     background-color: #fff;
     padding: 0 20rpx;
     box-sizing: border-box;
+
     .title {
       line-height: 100rpx;
       font-size: 40rpx;
@@ -136,16 +112,6 @@ watch(billList, (newValue) => {
       justify-content: center;
       align-items: flex-end;
       font-size: 25rpx;
-
-      &>view {
-        display: flex;
-        align-items: center;
-
-        .header-money {
-          font-size: 30rpx;
-          font-weight: bold;
-        }
-      }
     }
   }
 

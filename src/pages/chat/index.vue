@@ -17,6 +17,7 @@
 import { ref } from 'vue'
 import { getAllBills } from '@/utils/bill'
 import type { ButtonType, IChartOption } from '@/types/chart'
+import { onShow } from '@dcloudio/uni-app'
 
 const billList = getAllBills()
 
@@ -50,44 +51,47 @@ const yearData: IChartOption = {
 
 const allMonth: { [key: string]: { [key: string]: number } } = {}
 const allYear: { [key: string]: { [key: string]: number } } = {}
-billList.forEach(item => {
-  const dateString = item.date.split('-')
-  const year = dateString[0]
-  if (!yearData.categories.includes(year)) {
-    yearData.categories.push(year)
-  }
 
-  if (year in allYear) {
-    if (item.type === 'income') {
-      allYear[year]['income'] += Number(item.money)
-    } else if (item.type === 'expense') {
-      allYear[year]['expense'] += Number(item.money)
+const getAllMonthOrAllYear = (type: 'year' | 'month') => {
+  billList.forEach(item => {
+    const dateString = item.date.split('-')
+    const year = dateString[0]
+    if (!yearData.categories.includes(year)) {
+      yearData.categories.push(year)
     }
-  } else {
-    allYear[year] = {
-      'income': 0,
-      'expense': 0
-    }
-  }
 
-  const month = dateString[1]
-  if (!monthData.categories.includes(month)) {
-    monthData.categories.push(month)
-  }
+    if (year in allYear) {
+      if (item.type === 'income') {
+        allYear[year]['income'] += Number(item.money)
+      } else if (item.type === 'expense') {
+        allYear[year]['expense'] += Number(item.money)
+      }
+    } else {
+      allYear[year] = {
+        'income': 0,
+        'expense': 0
+      }
+    }
 
-  if (month in allMonth) {
-    if (item.type === 'income') {
-      allMonth[month]['income'] = allMonth[month]['income'] + Number(item.money)
-    } else if (item.type === 'expense') {
-      allMonth[month]['expense'] = allMonth[month]['expense'] + Number(item.money)
+    const month = dateString[1]
+    if (!monthData.categories.includes(month)) {
+      monthData.categories.push(month)
     }
-  } else {
-    allMonth[month] = {
-      'income': 0,
-      'expense': 0
+
+    if (month in allMonth) {
+      if (item.type === 'income') {
+        allMonth[month]['income'] += Number(item.money)
+      } else if (item.type === 'expense') {
+        allMonth[month]['expense'] += Number(item.money)
+      }
+    } else {
+      allMonth[month] = {
+        'income': 0,
+        'expense': 0
+      }
     }
-  }
-})
+  })
+}
 
 yearData.categories = [...Object.keys(allYear)]
 monthData.categories = [...Object.keys(allMonth)]

@@ -36,7 +36,7 @@
     </view>
 
     <view class="bill-list">
-      <BillItem v-for="(bill, index) in billListInPage" :key="bill.created_at + index" :bill="bill"></BillItem>
+      <BillItem v-for="(bill, index) in billListInPage" :key="bill.created_at + index + Math.random()" :bill="bill"></BillItem>
     </view>
   </view>
 </template>

@@ -9,13 +9,13 @@
 </template>
 
 <script setup lang='ts'>
-import { defineProps } from 'vue'
+import { defineProps, watch } from 'vue'
 import type { IBillFrom } from '@/types/bill'
 
 const props = defineProps<{
   bill: IBillFrom
 }>()
-const bill = props.bill
+let bill = props.bill
 </script>
 
 <style scoped lang='scss'>
