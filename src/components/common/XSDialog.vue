@@ -17,13 +17,13 @@
         </view>
         <view>
           <view class="label">日期：</view>
-          <picker :value="state.date" mode="date">
+          <picker @change="changeDate" :value="state.date" mode="date">
             <view class="uni-input">{{ state.date }}</view>
           </picker>
         </view>
         <view>
           <view class="label">时间：</view>
-          <picker :value="state.time" mode="time" start="09:01" end="21:01">
+          <picker @change="changeTime" :value="state.time" mode="time" start="09:01:00" end="21:01:00">
             <view class="uni-input">{{ state.time }}</view>
           </picker>
         </view>
@@ -79,6 +79,14 @@ const submit = () => {
 
 const cancel = () => {
   emits('cancel')
+}
+
+const changeDate = (e: any) => {
+  state.date = e.detail.value
+}
+
+const changeTime = (e: any) => {
+  state.time = e.detail.value + ':00'
 }
 
 const resetFormData = () => {
