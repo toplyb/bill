@@ -20,7 +20,7 @@ const props = defineProps({
 const weekExpense = ref(0)
 const currentDay = getDay()
 const weekStartDate = gleYourDate(currentDay - 1, 'before')
-const weekEndDate = gleYourDate(currentDay + (7 - currentDay - 1), 'after')
+const weekEndDate = gleYourDate(7 - currentDay, 'after')
 
 watch(props.billList, (newValue) => {
   weekExpense.value = 0

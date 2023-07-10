@@ -1,7 +1,7 @@
 <template>
   <view class="chart-container">
     <view class="charts-box">
-      <qiun-data-charts type="column" :chartData="chartData"/>
+      <qiun-data-charts type="column" :chartData="state.chartData"/>
     </view>
     <view class="btn-list">
       <button :class="currentType === 'month' ? 'active-button' : ''" @click="handlerChangeType('month')">按月统计
@@ -14,118 +14,27 @@
 
 <script setup lang='ts'>
 
-import { ref } from 'vue'
-import { getAllBills } from '@/utils/bill'
-import type { ButtonType, IChartOption } from '@/types/chart'
+import { reactive, ref } from 'vue'
+import type { ButtonType } from '@/types/chart'
+import getChartData from '@/utils/chart'
 import { onShow } from '@dcloudio/uni-app'
-
-const billList = getAllBills()
-
-const monthData: IChartOption = {
-  categories: [],
-  series: [
-    {
-      name: '收入',
-      data: []
-    },
-    {
-      name: '支出',
-      data: []
-    }
-  ]
-}
-
-const yearData: IChartOption = {
-  categories: [],
-  series: [
-    {
-      name: '收入',
-      data: []
-    },
-    {
-      name: '支出',
-      data: []
-    }
-  ]
-}
-
-const allMonth: { [key: string]: { [key: string]: number } } = {}
-const allYear: { [key: string]: { [key: string]: number } } = {}
-
-const getAllMonthOrAllYear = (type: 'year' | 'month') => {
-  billList.forEach(item => {
-    const dateString = item.date.split('-')
-    const year = dateString[0]
-    if (!yearData.categories.includes(year)) {
-      yearData.categories.push(year)
-    }
-
-    if (year in allYear) {
-      if (item.type === 'income') {
-        allYear[year]['income'] += Number(item.money)
-      } else if (item.type === 'expense') {
-        allYear[year]['expense'] += Number(item.money)
-      }
-    } else {
-      allYear[year] = {
-        'income': 0,
-        'expense': 0
-      }
-    }
-
-    const month = dateString[1]
-    if (!monthData.categories.includes(month)) {
-      monthData.categories.push(month)
-    }
-
-    if (month in allMonth) {
-      if (item.type === 'income') {
-        allMonth[month]['income'] += Number(item.money)
-      } else if (item.type === 'expense') {
-        allMonth[month]['expense'] += Number(item.money)
-      }
-    } else {
-      allMonth[month] = {
-        'income': 0,
-        'expense': 0
-      }
-    }
-  })
-}
-
-yearData.categories = [...Object.keys(allYear)]
-monthData.categories = [...Object.keys(allMonth)]
-
-for (let month in allMonth) {
-  monthData.series.forEach(item => {
-    if (item.name === '收入') {
-      item.data.push(allMonth[month]['income'].toFixed(2).toString())
-    } else {
-      item.data.push(allMonth[month]['expense'].toFixed(2).toString())
-    }
-  })
-}
-
-for (let year in allYear) {
-  yearData.series.forEach(item => {
-    if (item.name === '收入') {
-      item.data.push(allYear[year]['income'].toFixed(2).toString())
-    } else {
-      item.data.push(allYear[year]['expense'].toFixed(2).toString())
-    }
-  })
-}
+import { IChartOption } from '@/types/chart'
 
 const currentType = ref<ButtonType>('month')
 
-let chartData = monthData
+const state: {
+  chartData: IChartOption | null
+} = reactive({
+  chartData: null
+})
+
+onShow(() => {
+  state.chartData = getChartData('month')
+})
+
 const handlerChangeType = (type: ButtonType) => {
   currentType.value = type
-  if (type === 'month') {
-    chartData = monthData
-  } else {
-    chartData = yearData
-  }
+  state.chartData = getChartData(type)
 }
 </script>
 
