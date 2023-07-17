@@ -23,7 +23,7 @@
         </view>
         <view>
           <view class="label">时间：</view>
-          <picker @change="changeTime" :value="state.time" mode="time" start="09:01:00" end="21:01:00">
+          <picker @change="changeTime" :value="state.time" mode="time" start="09:01" end="21:01">
             <view class="uni-input">{{ state.time }}</view>
           </picker>
         </view>

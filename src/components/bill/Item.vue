@@ -4,18 +4,22 @@
       {{ bill.type === 'income' ? '收入' : '支出' }}
     </view>
     <view class="bill-item-money">{{ bill.money }}</view>
-    <view class="bill-item-time">{{ bill.date }} {{ bill.time }}</view>
+    <view class="bill-item-time">{{ bill.date }} {{ handleTime }}</view>
   </view>
 </template>
 
 <script setup lang='ts'>
-import { defineProps, watch } from 'vue'
+import { computed, defineProps } from 'vue'
 import type { IBillFrom } from '@/types/bill'
 
 const props = defineProps<{
   bill: IBillFrom
 }>()
 let bill = props.bill
+
+const handleTime = computed(() => {
+  return bill.time.split(':', 2).join(':')
+})
 </script>
 
 <style scoped lang='scss'>

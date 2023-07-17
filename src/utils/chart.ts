@@ -59,15 +59,12 @@ const getAllMonthOrAllYear = (type: ButtonType) => {
     }
   })
 
-  console.log(tempData, 'tempData==')
-
   // 月份或年份排序
   const categories = Object.keys(tempData).sort()
   const data: any = {}
   for (let category of categories) {
     data[category] = tempData[category]
   }
-  console.log(data, 'data===')
   if (type === 'month') {
     monthData.categories = categories
     const allIncome: string[] = []

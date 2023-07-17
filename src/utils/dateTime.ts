@@ -4,7 +4,7 @@ const getCurrentTime = () => {
   const hour = date.getHours()
   const minute = date.getMinutes()
   const second = date.getSeconds()
-  return `${addZeroToLeft(hour)}:${addZeroToLeft(minute)}:${addZeroToLeft(second)}`
+  return `${addZeroToLeft(hour)}:${addZeroToLeft(minute)}`
 }
 
 // 获取当前日期
