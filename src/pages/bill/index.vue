@@ -8,13 +8,15 @@
       </view>
     </view>
     <view class="bill-list">
-      <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index + Math.random()" :bill="bill" :is-show-delete="true" :index="index" @deleteBill="deleteBill"></BillItem>
+      <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index + Math.random()" :bill="bill"
+                :is-show-delete="true" @handlerDeleteBill="handlerDeleteBill"></BillItem>
     </view>
     <view class="container-button">
       <button @click="handlerAddBill('expense')">支出</button>
       <button @click="handlerAddBill('income')">收入</button>
       <view>
-        <XSDialog ref="dialogRef" :is-show="isShowDialog" @submit="submitBill" @cancel="cancelBill"></XSDialog>
+        <XSDialog ref="dialogRef" :is-show="isShowDialog" @submit="handlerSubmitBill"
+                  @cancel="handlerCancelBill"></XSDialog>
       </view>
     </view>
   </view>
@@ -23,69 +25,19 @@
 <script setup lang="ts">
 import XSDialog from '@/components/common/XSDialog.vue'
 import BillItem from '@/components/bill/Item.vue'
-import { computed, reactive, ref } from 'vue'
-import type { IBillFrom } from '@/types/bill'
 import WeekMoney from '@/components/bill/WeekMoney.vue'
 import DayMoney from '@/components/bill/DayMoney.vue'
+import useBillHook from '@/hooks/useBill'
 
-// 账单类型，expense 支出，income 收入
-type BillType = 'expense' | 'income'
-
-// 表单弹框
-const isShowDialog = ref(false)
-// 账单类型
-const billType = ref<BillType>('expense')
-// 所有账单
-let billList = reactive(uni.getStorageSync('bill_list') as IBillFrom[] || [] as IBillFrom[])
-const sortBillList = computed(() => {
-  return billList.sort((a, b) => {
-    return Date.parse(b.date + ' ' + b.time) - Date.parse(a.date + ' ' + a.time)
-  })
-})
-const dialogRef = ref<typeof XSDialog | null>(null)
-
-// 按钮点击事件
-const handlerAddBill = (type: BillType) => {
-  billType.value = type
-  isShowDialog.value = true
-}
-
-// 提交账单按钮
-const submitBill = (data: IBillFrom) => {
-  data['type'] = billType.value
-  billList.unshift(data)
-  try {
-    uni.setStorageSync('bill_list', billList)
-    dialogRef.value?.resetFormData()
-    isShowDialog.value = false
-    uni.showToast({
-      title: '提交成功',
-      duration: 2000,
-      icon: 'success'
-    })
-  } catch (e) {
-    uni.showToast({
-      title: '保存失败，请稍后重试',
-      duration: 2000,
-      icon: 'error'
-    })
-  }
-}
-
-// 取消按钮
-const cancelBill = () => {
-  dialogRef.value?.resetFormData()
-  isShowDialog.value = false
-}
-
-const deleteBill = (index: number) => {
-  const deleteItem = sortBillList.value[index]
-  billList = billList.filter(bill => {
-    return bill !== deleteItem;
-  })
-  uni.setStorageSync('bill_list', billList)
-}
-
+const {
+  sortBillList,
+  dialogRef,
+  isShowDialog,
+  handlerAddBill,
+  handlerSubmitBill,
+  handlerDeleteBill,
+  handlerCancelBill
+} = useBillHook()
 </script>
 
 <style lang="scss">

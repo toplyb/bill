@@ -7,3 +7,5 @@ export interface IBillFrom {
   created_at: string,
   type: 'income' | 'expense' | ''
 }
+
+export type BillType = 'expense' | 'income'
