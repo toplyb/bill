@@ -8,7 +8,7 @@
       </view>
     </view>
     <view class="bill-list">
-      <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index + Math.random()" :bill="bill"></BillItem>
+      <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index + Math.random()" :bill="bill" :is-show-delete="true" :index="index" @deleteBill="deleteBill"></BillItem>
     </view>
     <view class="container-button">
       <button @click="handlerAddBill('expense')">支出</button>
@@ -76,6 +76,14 @@ const submitBill = (data: IBillFrom) => {
 const cancelBill = () => {
   dialogRef.value?.resetFormData()
   isShowDialog.value = false
+}
+
+const deleteBill = (index: number) => {
+  const deleteItem = sortBillList.value[index]
+  billList = billList.filter(bill => {
+    return bill !== deleteItem;
+  })
+  uni.setStorageSync('bill_list', billList)
 }
 
 </script>
