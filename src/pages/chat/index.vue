@@ -16,11 +16,13 @@
 
 import { reactive, ref } from 'vue'
 import type { ButtonType } from '@/types/chart'
-import getChartData from '@/utils/chart'
 import { onShow } from '@dcloudio/uni-app'
 import { IChartOption } from '@/types/chart'
+import useChatHook from '@/hooks/useChat'
 
 const currentType = ref<ButtonType>('month')
+
+const { getChartData } = useChatHook()
 
 const state: {
   chartData: IChartOption | null
