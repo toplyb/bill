@@ -5,7 +5,8 @@
     </view>
     <view class="bill-item-money">{{ bill.money }}</view>
     <view class="bill-item-time">{{ bill.date }} {{ handleTime }}</view>
-    <view v-if="isShowDelete">
+    <view class="button-group" v-if="isShowDelete">
+      <button @click="handlerEditBill">编辑</button>
       <button @click="handlerDeleteBill">删除</button>
     </view>
   </view>
@@ -25,10 +26,14 @@ const handleTime = computed(() => {
   return bill.time.split(':', 2).join(':')
 })
 
-const emits = defineEmits(['handlerDeleteBill'])
+const emits = defineEmits(['handlerDeleteBill', 'handlerEditBill'])
 
 const handlerDeleteBill = () => {
   emits('handlerDeleteBill', props.bill)
+}
+
+const handlerEditBill = () => {
+  emits('handlerEditBill', props.bill)
 }
 </script>
 
@@ -62,9 +67,16 @@ const handlerDeleteBill = () => {
 
   }
 
-  button {
-    font-size: 28rpx;
-    padding: 0 15px;
+  .button-group {
+    display: flex;
+    button {
+      font-size: 28rpx;
+      padding: 0 20rpx;
+
+      &:first-child {
+        margin-right: 10rpx;
+      }
+    }
   }
 }
 </style>

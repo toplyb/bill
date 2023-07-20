@@ -9,7 +9,7 @@
     </view>
     <view class="bill-list">
       <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index + Math.random()" :bill="bill"
-                :is-show-delete="true" @handlerDeleteBill="handlerDeleteBill"></BillItem>
+                :is-show-delete="true" @handlerDeleteBill="handlerDeleteBill" @handlerEditBill="handlerEditBill"></BillItem>
     </view>
     <view class="container-button">
       <button @click="handlerAddBill('expense')">支出</button>
@@ -28,6 +28,8 @@ import BillItem from '@/components/bill/Item.vue'
 import WeekMoney from '@/components/bill/WeekMoney.vue'
 import DayMoney from '@/components/bill/DayMoney.vue'
 import useBillHook from '@/hooks/useBill'
+import { onMounted } from 'vue'
+import useBillStore from '@/store/bill'
 
 const {
   sortBillList,
@@ -36,8 +38,22 @@ const {
   handlerAddBill,
   handlerSubmitBill,
   handlerDeleteBill,
-  handlerCancelBill
+  handlerCancelBill,
+  handlerEditBill
 } = useBillHook()
+
+const store = useBillStore()
+
+onMounted(() => {
+  store.billList.map((item, index) => {
+    if (!Object.keys(item).includes('id')) {
+      item['id'] = index + 1
+    }
+
+    return item
+  })
+})
+
 </script>
 
 <style lang="scss">

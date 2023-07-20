@@ -19,14 +19,23 @@ const useBillStore = defineStore('bill', {
   },
 
   actions: {
-    addBill(data: IBillFrom) {
-      this.billList.unshift(data)
+    addOrEditBill(data: IBillFrom) {
+      if (data['id'] === 0) {
+        data['id'] = this.billList[this.billList.length - 1]['id'] + 1
+        this.billList.unshift(data)
+      } else {
+        const index = this.billList.findIndex(item => {
+          return item.id === data.id
+        })
+        this.billList[index] = data
+      }
+
       uni.setStorageSync('bill_list', this.billList)
     },
 
-    deleteBill(data: IBillFrom) {
+    deleteBill(id: number) {
       const index = this.billList.findIndex(bill => {
-        return bill === data
+        return bill.id === id
       })
       this.billList.splice(index, 1)
       uni.setStorageSync('bill_list', this.billList)

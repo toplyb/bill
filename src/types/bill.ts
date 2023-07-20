@@ -1,4 +1,5 @@
 export interface IBillFrom {
+  id: number,
   money: string,
   purpose: string,
   comment: string,

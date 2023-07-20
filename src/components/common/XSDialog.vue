@@ -54,6 +54,7 @@ const props = defineProps({
 const emits = defineEmits([ 'submit', 'cancel' ])
 
 const initBillForm: IBillFrom = {
+  id: 0,
   money: '',
   purpose: '',
   comment: '',
@@ -89,8 +90,9 @@ const changeTime = (e: any) => {
   state.time = e.detail.value + ':00'
 }
 
-const resetFormData = () => {
-  state = reactive({ ...initBillForm })
+const resetFormData = (data?: IBillFrom) => {
+  const obj = data ? data : initBillForm
+  state = reactive({ ...obj })
 }
 
 defineExpose({ resetFormData })

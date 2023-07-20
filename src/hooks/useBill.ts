@@ -27,7 +27,7 @@ const useBillHook = () => {
   const handlerSubmitBill = (data: IBillFrom) => {
     data['type'] = billType.value
     try {
-      store.addBill(data)
+      store.addOrEditBill(data)
       dialogRef.value?.resetFormData()
       isShowDialog.value = false
       uni.showToast({
@@ -51,8 +51,14 @@ const useBillHook = () => {
   }
 
   // 删除账单
-  const handlerDeleteBill = (data: IBillFrom) => {
-    store.deleteBill(data)
+  const handlerDeleteBill = (id: number) => {
+    store.deleteBill(id)
+  }
+
+  // 编辑账单
+  const handlerEditBill = (data: IBillFrom) => {
+    isShowDialog.value = true
+    dialogRef.value?.resetFormData(data)
   }
 
   return {
@@ -62,7 +68,8 @@ const useBillHook = () => {
     handlerAddBill,
     handlerSubmitBill,
     handlerCancelBill,
-    handlerDeleteBill
+    handlerDeleteBill,
+    handlerEditBill
   }
 }
 
