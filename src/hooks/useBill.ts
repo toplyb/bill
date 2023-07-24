@@ -1,7 +1,7 @@
 import type { BillType } from '@/types/bill'
 import { computed, reactive, ref } from 'vue'
 import type { IBillFrom } from '@/types/bill'
-import type XSDialog from '@/components/common/XSDialog.vue'
+import type XSDialog from '@/components/common/XSShade.vue'
 import useBillStore from '@/store/bill'
 
 const useBillHook = () => {

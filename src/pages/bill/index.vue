@@ -15,15 +15,18 @@
       <button @click="handlerAddBill('expense')">支出</button>
       <button @click="handlerAddBill('income')">收入</button>
       <view>
-        <XSDialog ref="dialogRef" :is-show="isShowDialog" @submit="handlerSubmitBill"
-                  @cancel="handlerCancelBill"></XSDialog>
+        <XSShade :is-show="isShowDialog">
+          <BillForm ref="dialogRef" @submit="handlerSubmitBill"
+                    @cancel="handlerCancelBill"></BillForm>
+        </XSShade>
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import XSDialog from '@/components/common/XSDialog.vue'
+import XSShade from '@/components/common/XSShade.vue'
+import BillForm from '@/components/bill/BillForm.vue'
 import BillItem from '@/components/bill/Item.vue'
 import WeekMoney from '@/components/bill/WeekMoney.vue'
 import DayMoney from '@/components/bill/DayMoney.vue'

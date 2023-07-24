@@ -10,7 +10,7 @@ const wxLogin = () => {
     success: (res) => {
       uni.request({
         method: 'POST',
-        url: 'http://127.0.0.1:3333/bill/wxlogin',
+        url: 'http://127.0.0.1:3000/api/wechat/bill/wxlogin',
         data: {
           code: res.code
         }
