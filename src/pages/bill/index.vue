@@ -7,10 +7,13 @@
         <WeekMoney :bill-list="sortBillList"></WeekMoney>
       </view>
     </view>
+
     <view class="bill-list">
       <BillItem v-for="(bill, index) in sortBillList" :key="bill.created_at + index + Math.random()" :bill="bill"
-                :is-show-delete="true" @handlerDeleteBill="handlerDeleteBill" @handlerEditBill="handlerEditBill"></BillItem>
+                :is-show-delete="true" @handlerDeleteBill="handlerDeleteBill"
+                @handlerEditBill="handlerEditBill"></BillItem>
     </view>
+
     <view class="container-button">
       <button @click="handlerAddBill('expense')">支出</button>
       <button @click="handlerAddBill('income')">收入</button>
@@ -21,16 +24,26 @@
         </XSShade>
       </view>
     </view>
+
+    <view>
+      <XSDialog :is-show="isShowLoginDialog" @handler-cancel-login="handlerCancelLogin" @handler-login="handlerLogin">
+        <view>
+          是否要登录该小程序？不登录也可以提交账单，但是如果更换手机或删除小程序等操作后数据会丢失，不过也可以选择在这些操作之前登录小程序即可同步数据到远程！
+        </view>
+      </XSDialog>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import XSShade from '@/components/common/XSShade.vue'
+import XSDialog from '@/components/common/XSDialog.vue'
 import BillForm from '@/components/bill/BillForm.vue'
 import BillItem from '@/components/bill/Item.vue'
 import WeekMoney from '@/components/bill/WeekMoney.vue'
 import DayMoney from '@/components/bill/DayMoney.vue'
 import useBillHook from '@/hooks/useBill'
+import useLoginHook from '@/hooks/useLogin'
 import { onMounted } from 'vue'
 import useBillStore from '@/store/bill'
 
@@ -42,8 +55,14 @@ const {
   handlerSubmitBill,
   handlerDeleteBill,
   handlerCancelBill,
-  handlerEditBill
+  handlerEditBill,
 } = useBillHook()
+
+const {
+  isShowLoginDialog,
+  handlerLogin,
+  handlerCancelLogin
+} = useLoginHook()
 
 const store = useBillStore()
 
