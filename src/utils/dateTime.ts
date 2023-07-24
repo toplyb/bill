@@ -33,7 +33,7 @@ const getCurrentTimeAndDate = () => {
 
 // 获取当前星期几
 const getDay = () => {
-  const date = new Date('2023-07-23')
+  const date = new Date()
   const day = date.getDay()
   return day === 0 ? 7 : day
 }
