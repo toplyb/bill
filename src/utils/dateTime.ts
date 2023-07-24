@@ -33,8 +33,9 @@ const getCurrentTimeAndDate = () => {
 
 // 获取当前星期几
 const getDay = () => {
-  const date = new Date()
-  return date.getDay()
+  const date = new Date('2023-07-23')
+  const day = date.getDay()
+  return day === 0 ? 7 : day
 }
 
 // 获取距离当前日期指定多少天的提起
